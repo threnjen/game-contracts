@@ -1,0 +1,35 @@
+FROM python:3.12-slim
+
+# Install required dependencies
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install pipenv
+RUN pip3 install pipenv
+
+# Copy the source code into the container
+COPY dagster_orchestration dagster_orchestration
+COPY dagster_orchestration/Pipfile* .
+COPY utils utils
+COPY config* .
+COPY pyproject.toml .
+
+# Install dependencies with pipenv
+RUN pipenv sync
+
+# Set environment variables with ARG for build-time and ENVIRONMENT for runtime
+
+ARG ASSET
+ENV ASSET=$ASSET
+
+ARG JOB
+ENV JOB=$JOB
+
+# Expose the port (if needed for the service)
+EXPOSE 3000
+
+# Set the entry point and command
+ENTRYPOINT ["pipenv", "run", "python", "dagster_orchestration/bgg_orchestrate.py"]
+CMD ["$ASSET", "$JOB"]

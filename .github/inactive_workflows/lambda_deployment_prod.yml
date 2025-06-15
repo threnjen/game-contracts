@@ -1,0 +1,30 @@
+name: Lambda Trigger CICD Deployment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Zip function
+        run: |
+          zip -r lambda_function.zip lambda_function.py
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_GITHUB_ROLE }}
+          aws-region: us-west-2
+      - run: zip -j lambda1.zip ./lambda_function.py
+      - run: aws lambda update-function-code --function-name=project_name_lambda  --zip-file=fileb://lambda1.zip

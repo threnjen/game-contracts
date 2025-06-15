@@ -1,0 +1,35 @@
+FROM python:3.12-slim
+
+# Install required dependencies
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install pipenv
+RUN pip3 install pipenv
+
+# Set PYTHONPATH to the current directory
+ENV PYTHONPATH=.
+ENV CUDA_VISIBLE_DEVICES=""
+ENV ENABLE_CUDA=0
+
+# Create and switch to a new user
+# RUN pip install sentence_transformers
+# RUN python -c 'from sentence_transformers import SentenceTransformer; embedder = SentenceTransformer("all-MiniLM-L6-v2")'
+# COPY . /app
+
+# Create necessary directories
+RUN mkdir -p modules 
+# Copy the source code into the container
+COPY modules/rag_ratings_embedder modules/rag_ratings_embedder
+COPY modules/rag_ratings_embedder/Pipfile* .
+COPY utils utils
+COPY data data
+COPY config* .
+# COPY embedding_model_huggingface embedding_model_huggingface
+
+# Install dependencies with pipenv
+RUN pipenv sync
+
+ENTRYPOINT ["pipenv", "run", "python", "modules/rag_ratings_embedder/main.py"]

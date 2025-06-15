@@ -1,0 +1,36 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  cicd:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          cache: 'pipenv'
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+          pipenv sync --dev
+      - name: lint
+        run: |
+          pipenv run isort --check .
+          pipenv run black --check .
+      - name: MyPy
+        run: pipenv run mypy .
+      - name: Test
+        run: pipenv run pytest
