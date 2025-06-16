@@ -4,13 +4,11 @@ from typing import Any
 
 class RunnerServerABC(ABC):
     @abstractmethod
-    async def poll_for_input(self, player_id: str) -> Any: ...
+    def poll_for_message_from_client(self) -> dict:
+        """Blocking or polling wait until a message is received from a client"""
+        pass
 
     @abstractmethod
-    async def receive_action(self, player_id: str, request) -> Any: ...
-
-    @abstractmethod
-    async def get_actions(self, player_id: str) -> Any: ...
-
-    @abstractmethod
-    async def push_response(self, player_id: str, request) -> Any: ...
+    def push_message_to_client(self, player_id: str, payload: dict) -> None:
+        """Send a message to the specified client (they will poll for it)"""
+        pass
