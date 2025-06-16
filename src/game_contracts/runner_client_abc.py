@@ -7,3 +7,6 @@ class RunnerClientABC(ABC):
 
     @abstractmethod
     def push_response(self) -> None: ...
+
+    @abstractmethod
+    def request_user_action(self, actions) -> str: ...
