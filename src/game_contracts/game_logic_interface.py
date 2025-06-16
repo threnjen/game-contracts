@@ -26,3 +26,6 @@ class GameLogicABC(ABC):
 
     @abstractmethod
     def post_turn_cleanup(self, player_id: int) -> None: ...
+
+    @abstractmethod
+    def handle_input(self, player_id: int, input_data: dict) -> None: ...
