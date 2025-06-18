@@ -9,6 +9,6 @@ class RunnerServerABC(ABC):
         pass
 
     @abstractmethod
-    def push_message_to_client(self, player_id: str, payload: dict) -> None:
+    def push_message_to_client(self, payload: dict) -> None:
         """Send a message to the specified client (they will poll for it)"""
         pass
