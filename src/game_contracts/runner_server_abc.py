@@ -14,6 +14,6 @@ class RunnerServerABC(ABC):
         pass
 
     @abstractmethod
-    def get_game_state(self, game_id: str) -> list:
+    def get_game_state(self, game_id: str) -> dict:
         """Retrieve the current game state for the specified game ID"""
         pass
