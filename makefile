@@ -50,17 +50,17 @@ install: venv                   ## Install project in editable mode into venv
 	$(VENV_PY) -m pip install -e ".[dev]"   # grabs dev-deps if declared
 
 .PHONY: package
-package: venv clean_dist        ## Build wheel & sdist under dist/
+package: venv clean_dist        ## Builds the library as a package and puts it in dist/
 	$(VENV_PY) -m build --sdist --wheel --outdir $(DIST_DIR)
 	@echo "Built packages: $(shell ls -1 $(DIST_DIR))"
 
 .PHONY: clean_dist
-clean_dist:                     ## Remove dist/ before re-packaging
+clean_dist:                     ## only removes "extra" stuff; use before packaging
 	@rm -rf $(DIST_DIR)
 	@mkdir -p $(DIST_DIR)
 
 .PHONY: clean
-clean:                          ## Remove venv & build artifacts
+clean:                          ## Remove venv & build artifacts; useful for starting the environment fresh
 	@rm -rf $(VENV_DIR) $(DIST_DIR) *.egg-info
 
 # ─────────────────────── ADVANCED TARGETS ───────────────────
