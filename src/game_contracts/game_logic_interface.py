@@ -1,7 +1,13 @@
-from abc import ABC, abstractmethod
+from abc import ABCMeta, abstractmethod
+from pydantic import BaseModel
+from typing import Union
 
+PydanticModelMeta = type(BaseModel)     # works for both v1 and v2
 
-class GameLogicABC(ABC):
+class ABCModelMeta(PydanticModelMeta, ABCMeta):
+    """Combine Pydantic’s and ABC’s metaclass logic."""
+
+class GameLogicABC(BaseModel, metaclass=ABCModelMeta):
     @abstractmethod
     def setup_game_state(self, game_state: dict) -> None: ...
 
