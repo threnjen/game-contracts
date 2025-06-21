@@ -2,36 +2,35 @@ from abc import ABCMeta, abstractmethod
 from pydantic import BaseModel
 from typing import Union
 
-PydanticModelMeta = type(BaseModel)     # works for both v1 and v2
+PydanticModelMeta = type(BaseModel)  # works for both v1 and v2
+
 
 class ABCModelMeta(PydanticModelMeta, ABCMeta):
     """Combine Pydantic’s and ABC’s metaclass logic."""
 
+
 class GameLogicABC(BaseModel, metaclass=ABCModelMeta):
-    @abstractmethod
-    def setup_game_state(self, game_state: dict) -> None: ...
-
-    @abstractmethod
-    def build_new_game_state(self) -> dict:
-        return {}
-
     @abstractmethod
     def is_game_over(self) -> bool: ...
 
-    @abstractmethod
-    def get_current_player(self) -> int: ...
+    """Check if the game is over.
+    The method returns True if the game is over, otherwise False."""
 
     @abstractmethod
-    def get_available_actions(self, player_id: int) -> list[dict[str, str]]: ...
+    def parse_client_message(self, input_data: dict) -> dict: ...
+
+    """Handle input data for the game logic.
+    The method processes the input data and returns the output data.
+    The engine 
+    Args:
+        input_data (dict): Input data for the game logic.
+        Returns:
+        dict: Output data after processing the input."""
 
     @abstractmethod
-    def apply_action(self, action: str, player: int) -> None: ...
-
-    @abstractmethod
-    def report_game_state(self) -> dict[str, str]: ...
-
-    @abstractmethod
-    def post_turn_cleanup(self, player_id: int) -> None: ...
-
-    @abstractmethod
-    def handle_input(self, input_data: dict) -> None: ...
+    def get_game_state(self) -> dict:
+        """Get the current state of the game.
+        Returns:
+            dict: The current state of the game.
+        """
+        return {}
