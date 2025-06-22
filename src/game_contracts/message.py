@@ -1,6 +1,7 @@
 from pydantic import BaseModel, computed_field
 from enum import Enum
-from datetime import datetime, timezone  
+from datetime import datetime, timezone
+
 
 class MessageSource(str, Enum):
     CLIENT = "client"
@@ -8,7 +9,7 @@ class MessageSource(str, Enum):
 
 
 class Message(BaseModel):
-    player_id: str
+    client_id: str
     source: MessageSource
     payload: dict
 
@@ -19,5 +20,5 @@ class ServerMessage(Message):
 
     @computed_field
     @property
-    def message_id(self) -> str:
-        return hash(f"{self.player_id}-{self.timestamp.isoformat()}-{self.payload}")
+    def message_id(self) -> int:
+        return hash(f"{self.client_id}-{self.timestamp.isoformat()}-{self.payload}")
