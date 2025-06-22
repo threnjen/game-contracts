@@ -11,3 +11,6 @@ class GameMetadataHandlerABC(ABC):
 
     @abstractmethod
     def get_game_state(self, game_id: str) -> dict: ...
+
+    @abstractmethod
+    def update_game_state(self, game_id: str, game_state: dict) -> None: ...
