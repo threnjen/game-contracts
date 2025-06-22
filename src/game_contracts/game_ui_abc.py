@@ -40,7 +40,7 @@ class GameUI(ABC):
         This method is called by the UI to send actions to the server.
         Uses the runner client to post the payload to the server.
         """
-        self.runner_client.post_to_server(payload)
+        self.runner_client.post_to_server(game_id, payload)
 
     async def wait_for_server_response(self) -> dict:
         """
