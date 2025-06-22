@@ -4,7 +4,7 @@ from typing import Any
 
 class RunnerServerABC(ABC):
     @abstractmethod
-    def poll_for_message_from_client(self) -> dict:
+    def poll_for_message_from_client(self, game_id: str) -> dict:
         """Blocking or polling wait until a message is received from a client"""
         pass
 
