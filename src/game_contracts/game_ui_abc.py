@@ -35,12 +35,14 @@ class GameUI(ABC):
         asyncio.create_task(self._background_poll_loop())
         print("UI is running")
 
-    def send_action_to_server(self, game_id: str, payload: dict) -> None:
+    def send_action_to_server(
+        self, game_id: str, client_id: str, payload: dict
+    ) -> None:
         """
         This method is called by the UI to send actions to the server.
         Uses the runner client to post the payload to the server.
         """
-        self.runner_client.post_to_server(game_id, payload)
+        self.runner_client.post_to_server(game_id, client_id, payload)
 
     async def wait_for_server_response(self) -> dict:
         """
